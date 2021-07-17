@@ -56,11 +56,18 @@ const updateProduct = async (req, res, next) => {
 };
 
 
+/**
+ * @param {Object} req
+ * @param {Object} req.query
+ * @param {Object} req.query.filterby - Filter by property eg. name, catagory
+ * @param {Object} req.query.filter - Value you want to filter
+ */
 const getProducts = async (req, res, next) => {
 	try {
 		const createProduct = await ProductModel.findAll({
 			where: {
-				userID: req.user.userID
+				userID: req.user.userID,
+				...req.query.filterby ? {[req.query.filterby]: req.query.filter || ""} : {}
 			}
 		});
 
